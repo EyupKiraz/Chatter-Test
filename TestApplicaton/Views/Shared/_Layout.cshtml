@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -31,9 +36,10 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-controller="Projects" asp-action="Index">Projects</a></li>
-                    <li><a asp-controller="AboutMe" asp-action="Index">About me</a></li>
-                    <li><a asp-controller="Contact" asp-action="Index">Contact</a></li>
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <li><a asp-controller="Groups" asp-action="Index">Groups</a></li>
+                    }
                 </ul>
                 <partial name="_LoginPartial" />
             </div>

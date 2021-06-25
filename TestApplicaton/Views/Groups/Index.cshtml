@@ -1,0 +1,79 @@
+﻿
+@{
+    ViewData["Title"] = "Groups";
+}
+
+<style>
+    .hover:hover {
+        background-color: aliceblue;
+    }
+
+    .post-flex {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 12px;
+    }
+</style>
+
+@if (!@ViewBag.UserGroup)
+{
+    <button id="toggle-create-button" class="btn btn-primary" onclick="showCreateGroup()">Create a Group</button>
+    <div id="create-group-form" style="display: none">
+        <form asp-controller="Groups" asp-action="CreateGroup" method="post">
+            <div class="form-group">
+                <input class="form-control" name="name" />
+            </div>
+            <div class="form-group">
+                <textarea class="form-control" name="description" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Create</button>
+        </form>
+    </div>
+}
+
+
+
+@if (ViewBag.Groups != null)
+{
+    foreach (var group in ViewBag.Groups)
+    {
+        <div class="hover card">
+            <div class="card-body">
+                <div class="post-flex">
+                    <div>
+                        <h4 class="card-title">@group.Name</h4>
+                        <p class="card-text">@group.Description</p>
+                    </div>
+                    <div>
+                        <form method="post">
+                            <input style="display: none" name="id" value="@group.Id" />
+                            @if (@ViewBag.User.GroupId == group.Id)
+                            {
+                                <button asp-controller="Groups" asp-action="LeaveGroup" type="submit" class="btn btn-danger">
+                                    Leave Group
+                                </button>
+                            }
+                            else
+                            {
+                                <button asp-controller="Groups" asp-action="JoinGroup" type="submit" class="btn btn-primary" disabled="@ViewBag.UserGroup">
+                                    Join Group
+                                </button>
+                            }
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+
+@section Scripts {
+    <script>
+        function showCreateGroup() {
+            document.getElementById("create-group-form").style.display = "block";
+            document.getElementById("toggle-create-button").style.display = "none";
+        }
+    </script>
+}
