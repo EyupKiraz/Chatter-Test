@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TestApplicaton.Data;
 
 namespace TestApplicaton.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210624203803_GroupAndPostMigration")]
+    partial class GroupAndPostMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -148,7 +150,7 @@ namespace TestApplicaton.Data.Migrations
 
                     b.Property<bool>("EmailConfirmed");
 
-                    b.Property<int>("GroupId");
+                    b.Property<int>("Group");
 
                     b.Property<bool>("LockoutEnabled");
 
@@ -192,8 +194,6 @@ namespace TestApplicaton.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Name");
-
                     b.HasKey("Id");
 
                     b.ToTable("Groups");
@@ -209,9 +209,15 @@ namespace TestApplicaton.Data.Migrations
 
                     b.Property<string>("Content");
 
-                    b.Property<int>("GroupId");
+                    b.Property<int?>("GroupId");
+
+                    b.Property<int>("UserId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("GroupId");
 
                     b.ToTable("Posts");
                 });
@@ -259,6 +265,17 @@ namespace TestApplicaton.Data.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("TestApplicaton.Models.Post", b =>
+                {
+                    b.HasOne("TestApplicaton.Models.ApplicationUser")
+                        .WithMany("Posts")
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("TestApplicaton.Models.Group")
+                        .WithMany("posts")
+                        .HasForeignKey("GroupId");
                 });
 #pragma warning restore 612, 618
         }

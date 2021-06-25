@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TestApplicaton.Data;
 
 namespace TestApplicaton.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210624204635_PostAssociationMigration")]
+    partial class PostAssociationMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -148,7 +150,7 @@ namespace TestApplicaton.Data.Migrations
 
                     b.Property<bool>("EmailConfirmed");
 
-                    b.Property<int>("GroupId");
+                    b.Property<int>("Group");
 
                     b.Property<bool>("LockoutEnabled");
 
@@ -192,8 +194,6 @@ namespace TestApplicaton.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Name");
-
                     b.HasKey("Id");
 
                     b.ToTable("Groups");
@@ -205,7 +205,7 @@ namespace TestApplicaton.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("ApplicationUserId");
+                    b.Property<int>("ApplicationUserId");
 
                     b.Property<string>("Content");
 

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TestApplicaton.Data;
 
 namespace TestApplicaton.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210624201820_ApplicationUserMigration")]
+    partial class ApplicationUserMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -140,6 +142,8 @@ namespace TestApplicaton.Data.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
+                    b.Property<int>("Age");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
@@ -147,8 +151,6 @@ namespace TestApplicaton.Data.Migrations
                         .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed");
-
-                    b.Property<int>("GroupId");
 
                     b.Property<bool>("LockoutEnabled");
 
@@ -186,34 +188,16 @@ namespace TestApplicaton.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("TestApplicaton.Models.Group", b =>
+            modelBuilder.Entity("TestApplicaton.Models.Page", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Groups");
-                });
-
-            modelBuilder.Entity("TestApplicaton.Models.Post", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("ApplicationUserId");
+                    b.Property<string>("Title")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("Content");
 
-                    b.Property<int>("GroupId");
+                    b.HasKey("Title");
 
-                    b.HasKey("Id");
-
-                    b.ToTable("Posts");
+                    b.ToTable("Pages");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
