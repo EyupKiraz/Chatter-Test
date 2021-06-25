@@ -12,5 +12,14 @@ namespace TestApplicaton.Models
         public byte[] ProfilePicture { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string Likes { get; set; }
+        public string Dislikes { get; set; }
+
+        public ApplicationUser()
+        {
+            Likes = "";
+            Dislikes = "";
+        }
+
     }
 }

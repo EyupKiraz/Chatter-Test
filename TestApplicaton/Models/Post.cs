@@ -13,5 +13,7 @@ namespace TestApplicaton.Models
         public string Content { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+        public int Likes { get; set; }
+        public int Dislikes { get; set; }
     }
 }

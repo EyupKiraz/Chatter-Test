@@ -41,6 +41,9 @@ namespace TestApplicaton.Controllers
                         newPost.Id = post.Id;
                         newPost.PostUser = postUser;
                         newPost.Content = post.Content;
+                        newPost.UpdatedAt = post.CreatedAt.ToString("HH:mm");
+                        newPost.Likes = post.Likes;
+                        newPost.Dislikes = post.Dislikes;
                         posts.Add(newPost);
                     }
 
@@ -56,7 +59,7 @@ namespace TestApplicaton.Controllers
 
         public FileContentResult Photo(string userId)
         {
-            var user = _userManager.GetUserAsync(User).Result;
+            var user = _dbContext.Users.FirstOrDefault(x => x.Id == userId);
             return new FileContentResult(user.ProfilePicture, "image/jpeg");
         }
 
@@ -91,6 +94,93 @@ namespace TestApplicaton.Controllers
                 _dbContext.SaveChanges();
             }
 
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeletePost(int id)
+        {
+            var post = _dbContext.Posts.FirstOrDefault(x => x.Id == id);
+
+            _dbContext.Posts.Remove(post);
+            _dbContext.SaveChanges();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> LikePost(int id)
+        {
+            var post = _dbContext.Posts.FirstOrDefault(x => x.Id == id);
+            var user = await _userManager.GetUserAsync(User);
+            var idString = "(" + id + "),";
+
+            if(user.Dislikes.Contains(idString))
+            {
+                user.Dislikes = user.Dislikes.Remove(user.Dislikes.IndexOf(idString), idString.Length);
+                post.Dislikes -= 1;
+            }
+
+            if (user.Likes.Contains(idString))
+            {
+                user.Likes = user.Likes.Remove(user.Likes.IndexOf(idString), idString.Length);
+                post.Likes -= 1;
+
+                _dbContext.SaveChanges();
+
+                return RedirectToAction(nameof(Index));
+            }
+            if(user.Likes != null)
+            {
+                user.Likes += idString;
+            } else
+            {
+                user.Likes = idString;
+            }
+
+            post.Likes += 1;
+
+            _dbContext.SaveChanges();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> DislikePost(int id)
+        {
+            var post = _dbContext.Posts.FirstOrDefault(x => x.Id == id);
+            var user = await _userManager.GetUserAsync(User);
+
+            var idString = "(" + id + "),";
+
+            if (user.Likes.Contains(idString))
+            {
+                user.Likes = user.Likes.Remove(user.Likes.IndexOf(idString), idString.Length);
+                post.Likes -= 1;
+            }
+
+            if (user.Dislikes.Contains(idString))
+            {
+                user.Dislikes = user.Dislikes.Remove(user.Dislikes.IndexOf(idString), idString.Length);
+                post.Dislikes -= 1;
+
+                _dbContext.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+            if (user.Dislikes != null)
+            {
+                user.Dislikes += idString;
+            }
+            else
+            {
+                user.Dislikes = idString;
+            }
+
+            post.Dislikes += 1;
+
+            _dbContext.SaveChanges();
 
             return RedirectToAction(nameof(Index));
         }

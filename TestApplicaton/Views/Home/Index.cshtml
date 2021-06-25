@@ -43,36 +43,53 @@
 
     @if (ViewBag.Posts != null)
     {
-        { 
-            var currentUser = ViewBag.Posts[0].PostUser;
-        }
         foreach (var post in ViewBag.Posts)
         {
-            <div class="hover card" id="body-@post.Id">
+            <div class="hover card" id="body-@post.Id" style="margin-bottom: 8px">
                 <div class="card-body">
                     <div id="post-body-@post.Id" class="post-flex">
                         <div class="post-content-flex">
                             <div>
-                                @if (ViewBag.User.ProfilePicture != null)
+                                @if (post.PostUser.ProfilePicture != null)
                                 {
-                                    <img src="@Url.Action("Photo", "Home" , new { UserId=ViewBag.User.Id })" height="64" style="margin-right: 12px"/>
+                                    <img src="@Url.Action("Photo", "Home" , new { UserId=post.PostUser.Id })" height="48" style="margin-right: 12px"/>
                                 }
                                 else
                                 {
-                                    <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" height="64" />
+                                    <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" height="48" />
                                 }
                             </div>
                             <div>
-                                <h4 class="card-title">@post.PostUser</h4>
-                                <p class="card-text">@post.Content</p>
+                                <h4 style="display: inline" class="card-title">@post.PostUser </h4><p style="color: darkgrey ;display: inline">@post.UpdatedAt</p>
+                                <p style="margin-bottom: 0px">@post.Content</p>
                             </div>
                         </div>
                         <div>
+                            <form asp-controller="Home" asp-action="LikePost" method="post" style="display: inline">
+                                <input name="id" value="@post.Id" type="hidden" />
+                                <button type="submit" class="edit-button btn">
+                                    <i class="bi bi-hand-thumbs-up"></i>
+                                    @post.Likes
+                                </button>
+                            </form>
+                            <form asp-controller="Home" asp-action="DislikePost" method="post" style="display: inline">
+                                <input name="id" value="@post.Id" type="hidden" />
+                                <button type="submit" class="edit-button btn">
+                                    <i class="bi bi-hand-thumbs-down"></i>
+                                    @post.Dislikes
+                                </button>
+                            </form>
                             @if (@post.PostUser.Id == @UserManager.GetUserId(User))
                             {
                                 <button class="edit-button btn" id="edit-@post.Id" onclick="showEdit(@post.Id)">
                                     <i class="bi bi-pencil-square"></i>
                                 </button>
+                                <form asp-controller="Home" asp-action="DeletePost" method="post" style="display: inline">
+                                    <input name="id" value="@post.Id" type="hidden" />
+                                    <button type="submit" class="edit-button btn">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
                             }
                         </div>
                     </div>
