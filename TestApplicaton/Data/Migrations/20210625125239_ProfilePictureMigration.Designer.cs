@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TestApplicaton.Data;
 
 namespace TestApplicaton.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210625125239_ProfilePictureMigration")]
+    partial class ProfilePictureMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -148,11 +150,7 @@ namespace TestApplicaton.Data.Migrations
 
                     b.Property<bool>("EmailConfirmed");
 
-                    b.Property<string>("FirstName");
-
                     b.Property<int>("GroupId");
-
-                    b.Property<string>("LastName");
 
                     b.Property<bool>("LockoutEnabled");
 
@@ -217,11 +215,7 @@ namespace TestApplicaton.Data.Migrations
 
                     b.Property<string>("Content");
 
-                    b.Property<DateTime>("CreatedAt");
-
                     b.Property<int>("GroupId");
-
-                    b.Property<DateTime>("UpdatedAt");
 
                     b.HasKey("Id");
 

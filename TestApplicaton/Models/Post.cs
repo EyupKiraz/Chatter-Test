@@ -11,5 +11,7 @@ namespace TestApplicaton.Models
         public string ApplicationUserId { get; set; }
         public int GroupId { get; set; }
         public string Content { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
     }
 }

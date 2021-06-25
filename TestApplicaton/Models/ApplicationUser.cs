@@ -9,5 +9,8 @@ namespace TestApplicaton.Models
     public class ApplicationUser : IdentityUser
     {
         public int GroupId { get; set; }
+        public byte[] ProfilePicture { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
     }
 }

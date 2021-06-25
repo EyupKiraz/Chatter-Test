@@ -16,23 +16,33 @@
     }
 </style>
 
-@if (!@ViewBag.UserGroup)
-{
-    <button id="toggle-create-button" class="btn btn-primary" onclick="showCreateGroup()">Create a Group</button>
-    <div id="create-group-form" style="display: none">
-        <form asp-controller="Groups" asp-action="CreateGroup" method="post">
-            <div class="form-group">
-                <input class="form-control" name="name" />
+    <div class="modal fade" id="create-club-modal" tabindex="-1" aria-labelledby="create-club-modal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Create a club</h5>
+                </div>
+                <form asp-controller="Groups" asp-action="CreateGroup" method="post">
+
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="form-label">Name</label>
+                            <input class="form-control" name="name" />
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Description</label>
+                            <textarea class="form-control" name="description" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+
             </div>
-            <div class="form-group">
-                <textarea class="form-control" name="description" rows="3"></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Create</button>
-        </form>
+        </div>
     </div>
-}
-
-
 
 @if (ViewBag.Groups != null)
 {

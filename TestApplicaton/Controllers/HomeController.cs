@@ -54,6 +54,12 @@ namespace TestApplicaton.Controllers
             return View();
         }
 
+        public FileContentResult Photo(string userId)
+        {
+            var user = _userManager.GetUserAsync(User).Result;
+            return new FileContentResult(user.ProfilePicture, "image/jpeg");
+        }
+
         [HttpPost]
         public async Task<IActionResult> SharePost(string content)
         {
@@ -63,6 +69,8 @@ namespace TestApplicaton.Controllers
             post.GroupId = group.Id;
             post.ApplicationUserId = user.Id;
             post.Content = content;
+            post.CreatedAt = DateTime.Now;
+            post.UpdatedAt = DateTime.Now;
 
             _dbContext.Posts.Add(post);
             _dbContext.SaveChanges();
@@ -79,6 +87,7 @@ namespace TestApplicaton.Controllers
             if (post != null && post.ApplicationUserId == user.Id)
             {
                 post.Content = content;
+                post.UpdatedAt = DateTime.Now;
                 _dbContext.SaveChanges();
             }
 

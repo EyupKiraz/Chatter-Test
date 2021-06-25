@@ -4,6 +4,7 @@
 @inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = "Home Page";
+    ViewData["PostUser"] = null;
 }
 
 <style>
@@ -16,6 +17,11 @@
         align-items: center;
         justify-content: space-between;
         padding: 0 12px;
+    }
+
+    .post-content-flex {
+        display: flex;
+        align-items: center;
     }
 
     .edit-body {
@@ -37,14 +43,29 @@
 
     @if (ViewBag.Posts != null)
     {
+        { 
+            var currentUser = ViewBag.Posts[0].PostUser;
+        }
         foreach (var post in ViewBag.Posts)
         {
             <div class="hover card" id="body-@post.Id">
                 <div class="card-body">
                     <div id="post-body-@post.Id" class="post-flex">
-                        <div>
-                            <h4 class="card-title">@post.PostUser</h4>
-                            <p class="card-text">@post.Content</p>
+                        <div class="post-content-flex">
+                            <div>
+                                @if (ViewBag.User.ProfilePicture != null)
+                                {
+                                    <img src="@Url.Action("Photo", "Home" , new { UserId=ViewBag.User.Id })" height="64" style="margin-right: 12px"/>
+                                }
+                                else
+                                {
+                                    <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" height="64" />
+                                }
+                            </div>
+                            <div>
+                                <h4 class="card-title">@post.PostUser</h4>
+                                <p class="card-text">@post.Content</p>
+                            </div>
                         </div>
                         <div>
                             @if (@post.PostUser.Id == @UserManager.GetUserId(User))
