@@ -8,7 +8,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - TestApplicaton</title>
+    <title>@ViewData["Title"] - Chatter</title>
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
@@ -22,23 +22,18 @@
     </environment>
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <nav class="navbar navbar-light navbar-fixed-top" style="background-color: #e3f2fd;">
         <div class="container">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">TestApplicaton</a>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Chatter</a>
             </div>
+
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li><a asp-controller="Home" asp-action="Index">My Club</a></li>
                     @if (SignInManager.IsSignedIn(User))
                     {
-                        <li><a asp-controller="Groups" asp-action="Index">Groups</a></li>
+                        <li><a asp-controller="Groups" asp-action="Index">Discover</a></li>
                     }
                 </ul>
                 <partial name="_LoginPartial" />
@@ -47,12 +42,45 @@
     </nav>
 
 
-    <div class="container body-content">
+    <div class="container body-content" >
         @RenderBody()
         <hr />
+
+    </div>
+    <div class="container body-content">
+
         <footer>
-            <p>&copy; 2021 - TestApplicaton</p>
+            <p>&copy;  BOUN MIS 336 MVC 5 PROJECT</p>
         </footer>
+
+    </div>
+
+    <div class="modal fade" id="create-club-modal" tabindex="-1" aria-labelledby="create-club-modal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Create a club</h5>
+                </div>
+                <form asp-controller="Groups" asp-action="CreateGroup" method="post">
+
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="form-label">Name</label>
+                            <input class="form-control" name="name" />
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Description</label>
+                            <textarea class="form-control" name="description" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
     </div>
 
     <environment include="Development">

@@ -31,16 +31,24 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-    <h2>Your Dashboard. Hello @UserManager.GetUserName(User)!</h2>
+   <br />
+   <!-- Başlık-->
     @if (ViewBag.Group != null)
     {
-        <h2>@ViewBag.Group.Name</h2>
+<h2 style="position:center; color:deepskyblue; font-weight: bold; font-style: italic;">Club @ViewBag.Group.Name</h2>
     }
     else
     {
-        <p>Please join a group from the groups page</p>
+<h2>
+    Seems like you don't have a group @ViewBag.User. Let's go to the Discover section.
+    <br />
+    <br />
+    <img src="~/images/ClubLonely.jpg" style="width:960px; height:540px;"/>
+</h2>
+
     }
 
+    <!--Postlar-->
     @if (ViewBag.Posts != null)
     {
         foreach (var post in ViewBag.Posts)
@@ -60,33 +68,33 @@
                                 }
                             </div>
                             <div>
-                                <h4 style="display: inline" class="card-title">@post.PostUser </h4><p style="color: darkgrey ;display: inline">@post.UpdatedAt</p>
-                                <p style="margin-bottom: 0px">@post.Content</p>
+                                <h4 style="display: inline; margin-left: 10px; font-weight: bold; color:brown" class="card-title" >@post.PostUser </h4><p style="color: darkgrey ;display: inline">@post.UpdatedAt</p>
+                                <p style="margin: 5px 0 0 10px;"> @post.Content</p>
                             </div>
                         </div>
                         <div>
                             <form asp-controller="Home" asp-action="LikePost" method="post" style="display: inline">
                                 <input name="id" value="@post.Id" type="hidden" />
-                                <button type="submit" class="edit-button btn">
+                                <button type="submit" class="edit-button btn-success">
                                     <i class="bi bi-hand-thumbs-up"></i>
                                     @post.Likes
                                 </button>
                             </form>
                             <form asp-controller="Home" asp-action="DislikePost" method="post" style="display: inline">
                                 <input name="id" value="@post.Id" type="hidden" />
-                                <button type="submit" class="edit-button btn">
+                                <button type="submit" class="edit-button btn-warning">
                                     <i class="bi bi-hand-thumbs-down"></i>
                                     @post.Dislikes
                                 </button>
                             </form>
                             @if (@post.PostUser.Id == @UserManager.GetUserId(User))
                             {
-                                <button class="edit-button btn" id="edit-@post.Id" onclick="showEdit(@post.Id)">
+                                <button class="edit-button btn-default" id="edit-@post.Id" onclick="showEdit(@post.Id)">
                                     <i class="bi bi-pencil-square"></i>
                                 </button>
                                 <form asp-controller="Home" asp-action="DeletePost" method="post" style="display: inline">
                                     <input name="id" value="@post.Id" type="hidden" />
-                                    <button type="submit" class="edit-button btn">
+                                    <button type="submit" class="edit-button btn-danger">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </form>
@@ -138,5 +146,6 @@
 else
 {
     <h2>Welcome to Chatter</h2>
+    <img src="~/images/BOUN.jpg" style="height: 540px; width: 720px;"/>
 }
 
